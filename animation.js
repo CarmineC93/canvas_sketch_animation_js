@@ -1,26 +1,40 @@
 const canvasSketch = require('canvas-sketch');
+//10 importo con require la funzione random
+const random = require('canvas-sketch-util/random');
 
 const settings = {
   dimensions: [ 1080, 1080 ]
 };
 
-const sketch = () => {
-  return ({ context, width, height }) => {
-    context.fillStyle = 'white';
+//13 poichè mi serve la width e l'height le passo come parametri nello schetch
+const sketch = ({ context, width, height }) => {
+
+  //7 Voglio più figure, creo un array vuoto dove le andrò a inserire
+  const agents = [];
+  //8 con un loop lo riempio di 40 figure
+    for(let i = 0; i<40; i++){
+      //9voglio che le coordinate delle figure sulla pagina siano casuali, importo la funzione canvas-sketch-util
+      //11 con funzione random creo valori casuali
+      const x = random.range(0, width);
+      const y = random.range(0, height);
+
+      agents.push(new Agent (x, y));
+    }
+
+return ({ context, width, height }) => {
+  context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
 
-//5 creo due istanze di oggetti dalla classe Agent
-const agentA = new Agent(800, 400);
-const agentB = new Agent(300, 700);
+    //5 creo due istanze di oggetti dalla classe Agent
+    const agentA = new Agent(800, 400);
+    const agentB = new Agent(300, 700);
 
-//6 ora posso generare le figure
-agentA.draw(context);
-agentB.draw(context);
-
+    //12 ora generaro le figure dall'array agents
+    agents.forEach(agent => {
+      agent.draw(context);
+    });
   };
 };
-
-
 
 canvasSketch(sketch, settings);
 
@@ -46,5 +60,4 @@ class Agent {
     context.fill();
 
   }
-
 }
