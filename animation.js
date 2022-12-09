@@ -42,6 +42,7 @@ class Agent {
   draw(context){
     context.beginPath();
     context.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
+    context.fillStyle= 'black';
     context.fill();
 
   }
