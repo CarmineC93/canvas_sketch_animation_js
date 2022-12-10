@@ -87,9 +87,9 @@ class Agent {
     this.pos.y += this.vel.y;
   }
 
-  //19 i cerchi escono dalla pagina perchè non ci sono limiti al foglio. Li creo con un nuovo metodo
+  //19 i cerchi escono dalla pagina perchè non ci sono limiti al foglio. Li creo con un nuovo metodo, che va a determinare il comportamento quando i cerchi sono in una certa posizione
   bounce(width, height){
-    //se le coordinate dei cerchi sono uguali alla posizione di inizio (0) e fine(width/height) foglio, inverto la velocità in modo che 'rimbalzino' tornando indietro
+    //se le coordinate dei cerchi sono uguali alla posizione di inizio (0) e fine(width/height) del foglio, inverto la velocità in modo che 'rimbalzino' tornando indietro
     if(this.pos.x <= 0 || this.pos.x >= width) this.vel.x *= -1;
     if(this.pos.y <= 0 || this.pos.y >= height) this.vel.y *= -1;
     // N.B. if(this.pos.y >= 0 || this.pos.x >= height) this.vel.y *= -1; //con questo settaggio riesco a farli muovere in una sola direzione
