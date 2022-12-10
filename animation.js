@@ -3,7 +3,9 @@ const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+  dimensions: [ 1080, 1080 ],
+  //18 specifico nei setting che voglio animazione in modo che non si veda più un solo frame a caricamento
+  animate: true
 };
 
 //13 poichè mi serve la width e l'height per impostare il parametro MAX nelle coordinate di random.range, le passo come parametri nello schetch
@@ -29,8 +31,10 @@ return ({ context, width, height }) => {
     const agentA = new Agent(800, 400);
     const agentB = new Agent(300, 700);
 
-    //12 ora generaro le figure dall'array agents
+    //12 ora generaro le figure dall'array agents con draw
     agents.forEach(agent => {
+      //17 aggiungo velocità con metodo update
+      agent.update();
       agent.draw(context);
     });
   };
@@ -38,8 +42,8 @@ return ({ context, width, height }) => {
 
 canvasSketch(sketch, settings);
 
-//1 creo una classe Point, per fissare la posizione degli oggetti sferici, con coordinate come proprietà
-class Point {
+//1 creo una classe Vector ( più adatto di Point ora che c'è la velocità), per fissare la posizione degli oggetti sferici, con coordinate come proprietà
+class Vector {
   constructor (x, y){
     this.x = x;
     this.y = y;
@@ -49,18 +53,31 @@ class Point {
 //4 creo una nuova classe con all'interno il punto di prima(posizione) che sarà la vera sfera
 class Agent {
   constructor (x, y){
-    this.pos = new Point(x, y);
+    this.pos = new Vector(x, y);
     this.radius = random.range(4, 12); //il raggio sarà variabile
+    //15 per far muovere i cerche mi serve una nuova proprietà 'velocità' con coordinate casuali tra 1 e -1
+    this.vel = new Vector(random.range(-1, 1), random.range(-1, 1));
+  
   }
   //do un metodo alla classe per generare le figure sferiche
   draw(context){
 
+    context.save();
+    //14 refactoring: sostituisco lo 0 in context.arc e creo un translate che si occupi di settare coordinate.
+    context.translate(this.pos.x, this.pos.y);
 
-
+    context.lineWidth = 4;
     context.beginPath();
-    context.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
+    context.arc(0, 0, this.radius, 0, Math.PI * 2);
     context.fill();
     context.stroke();
 
+    context.restore();
+  }
+
+  //16 per usare la velocità devo aggiungere la velocità alla posizione, in un nuovo metodo
+  update(){
+    this.pos.x += this.vel.x;
+    this.pos.y += this.vel.y;
   }
 }
