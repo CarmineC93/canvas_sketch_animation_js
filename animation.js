@@ -4,8 +4,12 @@ const random = require('canvas-sketch-util/random');
 
 const settings = {
   dimensions: [ 1080, 1080 ],
-  //18 specifico nei setting che voglio animazione in modo che non si veda più un solo frame a caricamento
+  //18 specifico nei setting che voglio animazione in modo che non si veda più un solo frame a caricamento (60 fps)
   animate: true
+  /*const animate = () => {
+    requestAnimationFrame(animate);
+  }*/
+
 };
 
 //13 poichè mi serve la width e l'height per impostare il parametro MAX nelle coordinate di random.range, le passo come parametri nello schetch
@@ -36,6 +40,8 @@ return ({ context, width, height }) => {
       //17 aggiungo velocità con metodo update
       agent.update();
       agent.draw(context);
+      //20 aggiungo limiti al foglio
+      agent.bounce(width, height);
     });
   };
 };
@@ -79,5 +85,15 @@ class Agent {
   update(){
     this.pos.x += this.vel.x;
     this.pos.y += this.vel.y;
+  }
+
+  //19 i cerchi escono dalla pagina perchè non ci sono limiti al foglio. Li creo con un nuovo metodo
+  bounce(width, height){
+    //se le coordinate dei cerchi sono uguali alla posizione di inizio (0) e fine(width/height) foglio, inverto la velocità in modo che 'rimbalzino' tornando indietro
+    if(this.pos.x <= 0 || this.pos.x >= width) this.vel.x *= -1;
+    if(this.pos.y <= 0 || this.pos.y >= height) this.vel.y *= -1;
+    // N.B. if(this.pos.y >= 0 || this.pos.x >= height) this.vel.y *= -1; //con questo settaggio riesco a farli muovere in una sola direzione
+
+
   }
 }
