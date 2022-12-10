@@ -6,16 +6,16 @@ const settings = {
   dimensions: [ 1080, 1080 ]
 };
 
-//13 poichè mi serve la width e l'height le passo come parametri nello schetch
+//13 poichè mi serve la width e l'height per impostare il parametro MAX nelle coordinate di random.range, le passo come parametri nello schetch
 const sketch = ({ context, width, height }) => {
 
   //7 Voglio più figure, creo un array vuoto dove le andrò a inserire
   const agents = [];
   //8 con un loop lo riempio di 40 figure
     for(let i = 0; i<40; i++){
-      //9voglio che le coordinate delle figure sulla pagina siano casuali, importo la funzione canvas-sketch-util
+      //9voglio che le coordinate delle figure sulla pagina siano casuali, importo la libreria canvas-sketch-util che ha funzione random
       //11 con funzione random creo valori casuali
-      const x = random.range(0, width);
+      const x = random.range(0, width); 
       const y = random.range(0, height);
 
       agents.push(new Agent (x, y));
@@ -50,14 +50,17 @@ class Point {
 class Agent {
   constructor (x, y){
     this.pos = new Point(x, y);
-    this.radius = 10; //il raggio sarà uguale per tutte le figure
+    this.radius = random.range(4, 12); //il raggio sarà variabile
   }
   //do un metodo alla classe per generare le figure sferiche
   draw(context){
+
+
+
     context.beginPath();
     context.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
-    context.fillStyle= 'black';
     context.fill();
+    context.stroke();
 
   }
 }
