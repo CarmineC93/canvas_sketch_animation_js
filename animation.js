@@ -29,11 +29,23 @@ const sketch = ({ context, width, height }) => {
 
 return ({ context, width, height }) => {
   context.fillStyle = 'white';
-    context.fillRect(0, 0, width, height);
+  context.fillRect(0, 0, width, height);
 
-    //5 creo due istanze di oggetti dalla classe Agent
-    const agentA = new Agent(800, 400);
-    const agentB = new Agent(300, 700);
+  //20 voglio collegare gli agenti con delle rette. Prima li faccio interagire l'uno con l'altro con dei nested loop
+  for(let i = 0; i< agents.length; i++){
+    const agent = agents[i];
+    
+    for(let j=0; j<agents.length; j++){
+      const other  =agents[j];
+
+      //21 ora con i metodi moveTo(punto di partenza) e lineTo(punto di arrivo) creo una retta con beginPath 
+      context.beginPath();
+      context.moveTo(agent.pos.x, agent.pos.y);
+      context.lineTo(other.pos.x, other.pos.y);
+      context.stroke();
+    }
+  }
+  
 
     //12 ora generaro le figure dall'array agents con draw
     agents.forEach(agent => {
