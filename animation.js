@@ -35,8 +35,14 @@ return ({ context, width, height }) => {
   for(let i = 0; i< agents.length; i++){
     const agent = agents[i];
     
-    for(let j=0; j<agents.length; j++){
+    for(let j=i+1; j<agents.length; j++){ 
+      //refactoring: con i+1 anzichè 0 evito le iterazioni inutili( prima c'era una linea da A a B e un'altra sovrapposta da B ad A)
+      //ora anzichè 1600 iterazioni per frame, sono 870 per frame
       const other  =agents[j];
+
+      //22 avendo la distanza tra i Vector, posso creare un controllo che nega la creazione di linee sopra una certa distanza
+      const dist = agent.pos.getDistance(other.pos);
+      if(dist > 200) continue;
 
       //21 ora con i metodi moveTo(punto di partenza) e lineTo(punto di arrivo) creo una retta con beginPath 
       context.beginPath();
@@ -66,6 +72,15 @@ class Vector {
     this.x = x;
     this.y = y;
   }
+
+  //21 metodo che collega con linee sono gli agenti vicini
+  getDistance(otherVector){
+    //mi serve la distanza, si presta bene il teorema di Pitagora 
+    //calcolo cateti (differenza tra coordinate X e Y dei due vettori) e l'ipotenuta sarà la distanza tra i vettori
+    const dx = this.x - otherVector.x;
+    const dy = this.y - otherVector.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
 }
 
 //4 creo una nuova classe con all'interno il punto di prima(posizione) che sarà la vera sfera
@@ -75,7 +90,7 @@ class Agent {
     this.radius = random.range(4, 12); //il raggio sarà variabile
     //15 per far muovere i cerche mi serve una nuova proprietà 'velocità' con coordinate casuali tra 1 e -1
     this.vel = new Vector(random.range(-1, 1), random.range(-1, 1));
-  
+
   }
   //do un metodo alla classe per generare le figure sferiche
   draw(context){
