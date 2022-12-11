@@ -1,6 +1,9 @@
 const canvasSketch = require('canvas-sketch');
 //10 importo con require la funzione random
 const random = require('canvas-sketch-util/random');
+//23 importo da libreria funzione math per usare metodo mapRange
+const math = require('canvas-sketch-util/math');
+
 
 const settings = {
   dimensions: [ 1080, 1080 ],
@@ -42,7 +45,10 @@ return ({ context, width, height }) => {
 
       //22 avendo la distanza tra i Vector, posso creare un controllo che nega la creazione di linee sopra una certa distanza
       const dist = agent.pos.getDistance(other.pos);
-      if(dist > 200) continue;
+      if(dist > 200) continue; //continue fa saltare l'iterazione successiva e va alla successiva
+
+      //24 con mapRange posso cambiare valori (spessore delle linee) in base variazione (in questo caso la distanza) 
+      context.lineWidth = math.mapRange(dist, 0, 200, 12, 1);
 
       //21 ora con i metodi moveTo(punto di partenza) e lineTo(punto di arrivo) creo una retta con beginPath 
       context.beginPath();
