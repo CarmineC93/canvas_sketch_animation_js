@@ -79,7 +79,7 @@ class Vector {
     this.y = y;
   }
 
-  //21 metodo che collega con linee sono gli agenti vicini
+  //21 metodo che collega con linee solo gli agenti vicini
   getDistance(otherVector){
     //mi serve la distanza, si presta bene il teorema di Pitagora 
     //calcolo cateti (differenza tra coordinate X e Y dei due vettori) e l'ipotenuta sarà la distanza tra i vettori
